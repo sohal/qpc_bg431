@@ -36,7 +36,10 @@
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/build/${presetName}",
         "cacheVariables": {
+            "test_all_frameworks": "true",
             "FETCHCONTENT_UPDATES_DISCONNECTED": "OFF",
+            "FETCHCONTENT_QUIET": "false",
+            "FETCHCONTENT_BASE_DIR": "${sourceDir}/_deps",
             "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
         }
     },

@@ -3,14 +3,6 @@ cmake_minimum_required(VERSION 3.22)
 include(CMakePrintHelpers)
 include(FetchContent)
 
-# Set branch names for the sub modules dependencies
-set(GITHUB_BRANCH_TOOLCHAIN "HEAD" CACHE STRING "git SHA for CMake Toolchain")
-# set the location of all fetched repos
-set(FETCHCONTENT_BASE_DIR "${CMAKE_SOURCE_DIR}/_deps")
-# show limited messages while cloning git repos
-set(FETCHCONTENT_QUIET ON)
-
-cmake_print_variables(GITHUB_BRANCH_TOOLCHAIN)
 FetchContent_Declare(
     cmake_scripts                             # Recommendation: Stick close to the original name.
     GIT_REPOSITORY  git@github.com:kodezine/cmake_scripts.git
@@ -32,10 +24,10 @@ project(
     DESCRIPTION "Hardware Abstraction Layer for STM32CubeXX based project"
 )
 
-
 if (NOT DEFINED ARMCMSIS_DEVICE)
     string (TOLOWER ${STM32_DEVICE} ARMCMSIS_DEVICE)
 endif ()
+
 configure_file(${cmake_scripts_SOURCE_DIR}/frameworks/unity/target/targetbasedincludes.txt ${CMAKE_SOURCE_DIR}/src/targetbasedincludes.h @ONLY NEWLINE_STYLE UNIX)
 
 add_executable(${PROJECT_NAME})
@@ -63,10 +55,11 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
-        stm32cubemx
+        stm32cubemx # uses cmsis from above
+        segger_rtt
+        CMSISDSP
 )
 set(${PROJECT_NAME}_LLVM_LINKER_SCRIPT "llvm.ld")
 set(${PROJECT_NAME}_LLVM_LINKER_PATH "${CMAKE_SOURCE_DIR}")
 setTargetCompileOptions(PROJECT_NAME)
 setTargetLinkOptions(PROJECT_NAME)
-

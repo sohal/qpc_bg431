@@ -21,7 +21,7 @@ extern "C" {
  * @param byte unsigned byte
  * @return uint8_t byte + 1
  */
-uint8_t addOneToByte(const uint8_t byte);
+uint32_t addOneToByte(const uint32_t byte);
 
 void SystemInit(void);
 #ifdef __cplusplus
